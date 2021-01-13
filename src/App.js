@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { getTracks } from './store/tracks/operations';
+import { Navigation } from './pages/Navigation';
+import { Header } from './commons/Header';
+import { Loader } from './components/Loader';
 
 function App() {
+  const dispatch = useDispatch();
+  const [dataLoad, setDataLoad] = useState(false);
+  
+  useEffect(() => {
+    dispatch(getTracks()).then(() => setDataLoad(true))
+  }, [dispatch])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header/>
+      {dataLoad ? <Navigation /> : <Loader/>}
+    </>
   );
 }
 
